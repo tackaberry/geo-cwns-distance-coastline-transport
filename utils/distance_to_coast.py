@@ -4,6 +4,7 @@ import numpy as np
 import xarray as xr
 import pandas as pd
 import shapely
+from utils.constants import SEG_DIST_1, SEG_DIST_2, SEG_DIST_3, SEG_DIST_4, SEG_DIST_5
 
 def hv(name, lonlat1, lonlat2):
     AVG_EARTH_RADIUS = 6371000. # Earth radius in meter
@@ -26,12 +27,12 @@ def hv(name, lonlat1, lonlat2):
     d1 = h.min(1)/1000
 
     order_list = [d1<5, d1<10, d1<100, d1<1000, d1>=1000]
-    choice_list = [1, 2, 3, 4, 5]
+    choice_list = [SEG_DIST_1, SEG_DIST_2, SEG_DIST_3, SEG_DIST_4, SEG_DIST_5]
     order = np.select(order_list, choice_list, default=0)
 
     obj = {}
     obj[f'dist_to_{name}'] = d1
-    obj[f'order_{name}'] = order
+    obj[f'segment_{name}'] = order
 
     return obj
 
@@ -104,4 +105,4 @@ def get_distance_to_points(name, arr1, arr2):
     
     xarr = df3.to_xarray()
 
-    return xr.merge([arr1, xarr], )
+    return xr.merge([arr1, xarr])

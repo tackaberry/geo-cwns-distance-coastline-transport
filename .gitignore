@@ -6,6 +6,7 @@ config.ini
 *.zip
 *.xlsx
 credentials/*
+*.laccdb
 
 # custom
 data/

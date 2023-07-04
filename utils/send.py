@@ -20,9 +20,11 @@ credentials = service_account.Credentials.from_service_account_file(creds_filena
 ee.Initialize(credentials=credentials, project=ee_project)
 
 
-def sendFiles(source, target_name):
-    print(f"Uploading {source}.csv gs://{prefix}-data/{target_name}.csv")
+def sendToEarthEngine(source, target_name):
+    print(f"Sending gs://{prefix}-data/{target_name}.csv to Earth Engine")
+    
     subprocess.call(f'gcloud storage cp {source}.csv gs://{prefix}-data/{target_name}.csv', shell=True)
+
     taskId = subprocess.check_output(f'earthengine --service_account_file={creds_filename} upload table --force --asset_id=projects/{ee_project}/assets/{target_name} gs://{prefix}-data/{target_name}.csv', shell=True).decode('utf-8').strip()
     taskId = taskId.split(' ')[-1]
 
@@ -40,8 +42,7 @@ def sendFiles(source, target_name):
         if status == 'COMPLETED':
             break
 
-sendFiles('2-cwns-data-distance', 'cwns-data-distance')
-sendFiles('3-power-data-distance', 'power-data-distance') 
-sendFiles('4-transport', 'transport')
-sendFiles('5-cwns-data-distance-incl-transport', 'cwns-data-distance-incl-transport')
-sendFiles('5-power-data-distance-incl-transport', 'power-data-distance-incl-transport') 
+def sendToGoogleStorage(source, target_name):
+    
+    print(f"Uploading {source}.csv gs://{prefix}-data/{target_name}.csv")
+    subprocess.call(f'gcloud storage cp {source}.csv gs://{prefix}-data/{target_name}.csv', shell=True)

@@ -6,12 +6,14 @@ query = """
 SELECT 
     summary_facility.cwns_number, 
     summary_facility.facility_name, 
+    summary_facility.facility_state,
     val(summary_facility.latitude) as latitude,
     val(summary_facility.longitude)*-1 as longitude,
     summary_facility.location_description, 
     summary_effluent.pres_effluent_treatment_level, 
     summary_effluent.pres_disinfection as disinfection,
     summary_permit.permit_type,
+    summary_permit.permit,
     summary_discharge.discharge_method,
     summary_population.pres_res_total_receivng_trmt as population,
     summary_flow.exist_total AS flow_mgd

@@ -4,8 +4,6 @@ This repo is used in a data pipeline to take CWNS data and Power Station data an
 
 This expects the data sources to be downloaded and existing in the same folder. 
 
-Some data processing scripts automatically filter to US regions. 
-
 The `main.js` file in `ee-source` can be used in Google Earth Engine to produce an output such as this:
 
 ![Google Earth Engine](screenshot-code.earthengine.google.com.png)
@@ -38,13 +36,6 @@ You will need an OpenAI API key to get started.
 
 Copy `config.sample.ini` to `config.ini` and customize. 
 
-```ini
-[default]
-project_prefix = project-
-creds_filename = 'project-111111-nnnnnn.json'
-ee_project = project-111111
-
-```
 
 ### 2. Set up your python environment
 

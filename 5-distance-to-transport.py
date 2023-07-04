@@ -1,6 +1,8 @@
 import pandas as pd
 from utils.distance_to_coast import get_distance_to_points
 import configparser
+from utils.constants import SEG_DIST_1, SEG_DIST_2
+
 
 config = configparser.ConfigParser()
 config.read('config.ini')
@@ -14,24 +16,28 @@ rail = dst.where(dst.type=="rail", drop=True)
 df = pd.read_csv('2-cwns-data-distance.csv')
 ds = df.to_xarray()
 
-dist = get_distance_to_points("port", ds, port)
-dist = get_distance_to_points("rail", dist, rail)
+ds = get_distance_to_points("port", ds, port)
+ds = get_distance_to_points("rail", ds, rail)
 
-dist = dist.where(dist.order<=2, drop=True)
+ds = ds.where((ds.segment_coastline==SEG_DIST_1) | (ds.segment_coastline==SEG_DIST_2), drop=True)
 
-dist.to_dataframe().to_csv('5-cwns-data-distance-incl-transport.csv')
-dist.to_dataframe().to_excel(f'{config["default"]["project_prefix"]}-cwns-data-distance-incl-transport.xlsx')
+df = ds.to_dataframe()
+df = df[['facility_name','cwns_number','facility_state','location_description','pres_effluent_treatment_level','disinfection','permit_type','permit','discharge_method','latitude','longitude','population','flow_mgd','flow_lps','dist_to_coastline','dist_to_port','dist_to_rail','segment_coastline','flow_segment','population_segment','segment_port','segment_rail']]
+df.to_csv('5-cwns-data-distance-incl-transport.csv')
+df.to_excel(f'{config["default"]["project_prefix"]}-cwns-data-distance-incl-transport.xlsx')
 
 
 
 df = pd.read_csv('3-power-data-distance.csv')
 ds = df.to_xarray()
 
-dist = get_distance_to_points("port", ds, port)
-dist = get_distance_to_points("rail", dist, rail)
+ds = get_distance_to_points("port", ds, port)
+ds = get_distance_to_points("rail", ds, rail)
 
-dist = dist.where(dist.order<=2, drop=True)
-
-dist.to_dataframe().to_csv('5-power-data-distance-incl-transport.csv')
-dist.to_dataframe().to_excel(f'{config["default"]["project_prefix"]}-power-data-distance-incl-transport.xlsx')
+ds = ds.where( (ds.segment_coastline==SEG_DIST_1) | (ds.segment_coastline==SEG_DIST_2), drop=True)
+df = ds.to_dataframe()
+# app ' around each of index,name,capacity_mw,latitude,longitude,primary_fuel,dist_to_coastline,segment_coastline,segment_power,facility_state,dist_to_port,segment_port,dist_to_rail,segment_rail
+df = df[['name','facility_state','primary_fuel','latitude','longitude','capacity_mw','dist_to_coastline','dist_to_port','dist_to_rail','segment_coastline','segment_power','segment_port','segment_rail']]
+df.to_csv('5-power-data-distance-incl-transport.csv')
+df.to_excel(f'{config["default"]["project_prefix"]}-power-data-distance-incl-transport.xlsx')
 

@@ -1,6 +1,8 @@
 import pandas as pd
 from utils.distance_to_coast import get_distance_to_coast
 import configparser
+from utils.constants import SEG_DIST_1, SEG_DIST_2, SEG_DIST_3
+
 
 config = configparser.ConfigParser()
 config.read('config.ini')
@@ -19,9 +21,8 @@ dfr2["object_id"] = dfr2["object_id"] + 20000
 
 df = pd.concat([dfp2, dfr2],  axis=0, ignore_index=True)
 ds = df.to_xarray()
-dist = get_distance_to_coast(ds, 'United States of America')
-dist = dist.rename({'order_coastline':'order'})
+dist = get_distance_to_coast(ds, config['default']['coastlines_country'])
 
-filtered = dist.where(dist.order<=3, drop=True)
+filtered = dist.where((dist.segment_coastline==SEG_DIST_1) | (dist.segment_coastline==SEG_DIST_2) | (dist.segment_coastline==SEG_DIST_3), drop=True)
 
 filtered.to_dataframe().to_csv('4-transport.csv')
