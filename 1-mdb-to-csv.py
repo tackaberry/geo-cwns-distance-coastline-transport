@@ -6,7 +6,8 @@ query = """
 SELECT 
     summary_facility.cwns_number, 
     summary_facility.facility_name, 
-    summary_facility.facility_state,
+    summary_facility.facility_state as state,
+    summary_facility.point_of_contact_city as city,
     val(summary_facility.latitude) as latitude,
     val(summary_facility.longitude)*-1 as longitude,
     summary_facility.location_description, 

@@ -28,6 +28,8 @@ Adapted from [Find closest point to shapefile coastline in Python](https://gis.s
 
 [WRI Global Power Plant Database](https://datasets.wri.org/dataset/globalpowerplantdatabase)
 
+[Thermoelectric cooling water data](https://www.eia.gov/electricity/data/water/)
+
 ## Prerequisites
 
 You will need an OpenAI API key to get started. 
